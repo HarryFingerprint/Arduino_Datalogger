@@ -48,7 +48,7 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  /*Wire.begin();
+  Wire.begin();
 
   if (!display.begin()) {
     Serial.println(F("Display initialization failed!"));
@@ -58,7 +58,7 @@ void setup() {
   display.display(); // Show splash screen
   delay(2000); // Pause for 2 seconds
   display.clearDisplay(); // Clear the buffer
-  */
+  
     Serial.print("Initializing SD card...");
 
   // see if the card is present and can be initialized:
@@ -68,13 +68,13 @@ void setup() {
     while (1);
   }
   Serial.println("card initialized.");
-   /* 
+    
     File dataFile = SD.open("datalog.txt", FILE_WRITE);
     dataFile.println("--------");
     dataFile.println("NEW TEST:");
     dataFile.println("--------");
     dataFile.close();
-    */
+    
 }
 
 void loop() {
@@ -108,7 +108,7 @@ else if(buttonDebounce(dataSelectDecPin) == HIGH){
 
   // update display output
 
-/*
+
 display.clearDisplay();
 
 display.setTextSize(1); // Set text size
@@ -130,7 +130,7 @@ display.print(F("Test "));
 display.print(dataSelect);
 
 display.display();
-*/
+
 }
 
 void ISR_tick() {
@@ -140,7 +140,7 @@ void ISR_tick() {
     RPM = 60000000.0 / (time*rotationSegment);
 
 
-    /*Serial.print(100);
+    Serial.print(100);
     Serial.print(",");
     Serial.print(RPM);
     Serial.print(",");
@@ -150,7 +150,7 @@ void ISR_tick() {
     Serial.print(",");
     Serial.print(scaledTorqueVoltage);
     Serial.print(",");
-    Serial.println(0);*/
+    Serial.println(0);
 
     timeSinceLastTick = micros();
 
