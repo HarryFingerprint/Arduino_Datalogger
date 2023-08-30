@@ -1,3 +1,11 @@
+
+/*
+
+  program by Harry Farrell
+  August 30th, 2023
+
+*/
+
 #include <Wire.h>
 #include <Adafruit_SH110X.h>
 
@@ -11,17 +19,23 @@
 // Initialize the display
 Adafruit_SH1106G display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire);
 
+// User Interface Button Selection
 const int dataSelectIncPin = 7;
 const int dataSelectDecPin = 6;
 
+// dataSelect changes the .txt file on the SD card that the arduino writes to
 int dataSelect = 1;   
 
+// the SD is connected to pin 4
 const int chipSelect = 4;
 
+// digital pin that the encoder is connected to
 const int tickPin = 2;  
 
+// number of encoder ticks in one rotation 
 float rotationSegment = 36; 
 
+// Variables used to calculate RPM and torque
 float time = 0;
 float timeSinceLastTick = 0;
 
@@ -29,7 +43,7 @@ float RPM;
 float torqueVoltage;
 float scaledTorqueVoltage;
 
-bool buttonDebounce(int buttonPin); // Function prototype
+bool buttonDebounce(int buttonPin); // Function for debouncing interface pushbuttons
 
 void setup() {
   // put your setup code here, to run once:
@@ -82,7 +96,9 @@ void loop() {
 torqueVoltage = (analogRead(A0)*5.0)/1024.0;
 scaledTorqueVoltage = torqueVoltage*10;
 
-  // check data select
+  // check data select buttons
+  // increases or decreases the test number
+  // uses buttonDebounce button to prevent debounce
 
 if(buttonDebounce(dataSelectIncPin) == HIGH){
 
@@ -134,7 +150,8 @@ display.display();
 }
 
 void ISR_tick() {
-
+  // checks to see if the time between ticks is realistic
+  // debounce mitigation
   if((micros()-timeSinceLastTick) > 2048){
     time = micros() - timeSinceLastTick;
     RPM = 60000000.0 / (time*rotationSegment);
